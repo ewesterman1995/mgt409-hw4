@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus Customs: App Check (Problem 11)</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      line-height: 1.5;
+      color: #1f2933;
+      background: #f4f6f9;
+    }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+    h1 {
+      margin: 0 0 4px;
+      color: #00356b;
+    }
+    .intro {
+      margin: 0 0 32px;
+      color: #5f6b76;
+    }
+    section {
+      margin-bottom: 40px;
+      padding: 24px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0, 31, 63, 0.08);
+    }
+    h2 {
+      margin: 0 0 4px;
+      color: #00356b;
+    }
+    .question {
+      margin: 0 0 16px;
+      color: #5f6b76;
+    }
+    figure {
+      margin: 0 0 16px;
+    }
+    img {
+      display: block;
+      width: 100%;
+      border: 1px solid #e4e0dc;
+      border-radius: 8px;
+    }
+    figcaption {
+      margin-top: 10px;
+    }
+    .db {
+      margin: 6px 0 0;
+      font-size: 0.92rem;
+      color: #5f6b76;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Campus Customs: App Check</h1>
+    <p class="intro">
+      Screenshots of the running site (React front end on port 5173, FastAPI backend on port 8000,
+      the real <code>campus_customs.db</code>), taken in Microsoft Edge as a guest shopper on
+      October 6, 2026. Click any screenshot to open it full size.
+    </p>
+
+    <section>
+      <h2>1. Chat checks inventory and price from the database</h2>
+      <p class="question">Shopper asked: "What sizes are left of the Basic Hoodie Big Yale, and how much is it?"</p>
+      <figure>
+        <a href="app_check_images/inventory.png">
+          <img src="app_check_images/inventory.png" alt="The chat answers that the Basic Hoodie Big Yale is $68.00, in stock in XS, L and XXL, with only 5 left in S and M and only 2 left in XL." />
+        </a>
+        <figcaption>
+          The assistant answered with the real price ($68.00) and stock for every size, straight from the database.
+          Following the store's sales rule, sizes with plenty say "in stock", and sizes with 5 or fewer show the real
+          count to create urgency ("only 5 left" in S and M, "only 2 left" in XL).
+          <p class="db">Database: $68.00; XS 15, S 5, M 5, L 8, XL 2, XXL 25.</p>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>2. Dynamic search cards appear after a category question</h2>
+      <p class="question">Shopper asked: "Do you have any quarter-zips?"</p>
+      <figure>
+        <a href="app_check_images/search_cards.png">
+          <img src="app_check_images/search_cards.png" alt="The chat replies about quarter-zips and shows a Branford 1/4 Zip product card with a See 7 more quarter-zips button." />
+        </a>
+        <figcaption>
+          The agent searched the catalogue and returned structured product matches, which the website rendered as a
+          clickable product card (photo, name, $72.00 price, short description) plus a "See 7 more quarter-zips"
+          button, built from the database rather than written by the model.
+        </figcaption>
+      </figure>
+      <figure>
+        <a href="app_check_images/search_cards_page.png">
+          <img src="app_check_images/search_cards_page.png" alt="The Matches from your chat page showing 8 quarter-zip product cards." />
+        </a>
+        <figcaption>
+          Clicking "See 7 more quarter-zips" opens a page with all 8 matches from the chat (the best match plus 7 more;
+          chat search shows up to 8 of the store's 11 quarter-zips). Every card opens the product's detail page.
+        </figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>3. Usability feature (Problem 9): live progress and an instant product card</h2>
+      <p class="question">Shopper asked: "Is the Yale Grandpa Hoodie in stock in a medium?" (screenshot taken mid-answer)</p>
+      <figure>
+        <a href="app_check_images/live_progress.png">
+          <img src="app_check_images/live_progress.png" alt="While the assistant is still writing, the chat shows 'Found matching products. Writing your answer…' with the Yale Grandpa Hoodie product card already visible." />
+        </a>
+        <figcaption>
+          Before the answer is written, the chat already shows what it is doing ("Found matching products. Writing your
+          answer…") and the matching product's card, so the shopper sees the item instantly instead of a blank wait.
+          The finished reply was "Yes, the Yale Grandpa Hoodie is in stock in a medium."
+          <p class="db">Database: Yale Grandpa Hoodie $68.00; size M 25 in stock.</p>
+        </figcaption>
+      </figure>
+    </section>
+  </main>
+</body>
+</html>

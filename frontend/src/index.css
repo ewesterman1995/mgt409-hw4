@@ -1,0 +1,1347 @@
+:root {
+  /* Yale's core brand colors (Yale Brand Guidelines, Yale Licensing 2022). The guide
+     forbids using Yale marks with other Ivy schools' colors (Harvard crimson,
+     Princeton orange, Penn/Cornell red, Dartmouth green...), so accents stay blue. */
+  --navy: #00356b; /* Yale Blue */
+  --accent: #286dc0; /* High Intensity Blue: things shoppers click */
+  --yale-gray: #978d85; /* Yale Gray: too light for small text (3.3:1), so borders only */
+  --blue-tint: #eaf1fa; /* light tint of Yale Blue for background bands */
+
+  --text: #1f2933;
+  --muted: #5f6b76;
+  --border: #e4e0dc; /* light tint of Yale Gray */
+  --bg: #ffffff;
+  --bg-soft: #f4f6f9;
+
+  /* Source Sans 3: a free look-alike of Mallory, the sans-serif Yale uses on its sites. */
+  --font-sans: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+.brand {
+  font-weight: 700;
+}
+
+/* Inputs and buttons don't inherit the page font by default. */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+a {
+  color: var(--navy);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  min-height: calc(100vh - 140px);
+}
+
+/* Header: thin Yale Blue strip + white main bar, pinned to the top */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 12px rgba(0, 31, 63, 0.1);
+}
+
+.utility-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 24px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.utility-bar button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 10px 24px;
+  background: #fff;
+}
+
+.navbar a {
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-mark {
+  width: 40px;
+  height: auto;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-name {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.brand-tagline {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.navbar nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+  font-weight: 600;
+}
+
+.nav-button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--navy);
+  font: inherit;
+  cursor: pointer;
+}
+
+.navbar nav a.active {
+  text-decoration: underline;
+  text-underline-offset: 8px;
+}
+
+/* "Create Account" and "Hi, Pat" stand out as pills. */
+.navbar nav a.nav-cta,
+.navbar nav a.nav-pill {
+  padding: 7px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.navbar nav a.nav-cta {
+  background: var(--accent);
+  color: #fff;
+}
+
+.navbar nav a.nav-cta:hover {
+  background: var(--navy);
+}
+
+.navbar nav a.nav-pill {
+  background: var(--blue-tint);
+}
+
+.navbar nav a.nav-pill.active {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+@media (max-width: 760px) {
+  /* On phones the header wraps to several lines, so it scrolls away instead of
+     staying pinned and covering a third of the screen. */
+  .site-header {
+    position: static;
+  }
+  .utility-bar span {
+    display: none;
+  }
+  .utility-bar {
+    justify-content: flex-end;
+  }
+  .navbar nav {
+    gap: 14px;
+    font-size: 0.95rem;
+  }
+  .navbar nav a.nav-cta,
+  .navbar nav a.nav-pill {
+    padding: 5px 12px;
+  }
+}
+
+/* Products menu: opens on hover or keyboard focus */
+.navbar {
+  position: relative;
+  z-index: 50;
+}
+
+.nav-menu {
+  position: relative;
+}
+
+.nav-menu-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  z-index: 60;
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 8px 40px;
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(0, 31, 63, 0.18);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -6px);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+}
+
+/* Invisible bridge so the menu doesn't close while the mouse moves down to it. */
+.nav-menu-panel::before {
+  content: '';
+  position: absolute;
+  inset: -14px 0 auto 0;
+  height: 14px;
+}
+
+.nav-menu:hover .nav-menu-panel,
+.nav-menu:focus-within .nav-menu-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.nav-menu-panel h3 {
+  margin: 0 0 6px;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.navbar .nav-menu-panel a {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 0;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.navbar .nav-menu-panel a:hover,
+.navbar .nav-menu-panel a:focus-visible {
+  color: var(--navy);
+  text-decoration: underline;
+}
+
+.nav-menu-count {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.navbar .nav-menu-panel .nav-menu-all {
+  grid-column: 1 / -1;
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-weight: 600;
+  color: var(--navy);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-menu-panel {
+    transition: none;
+  }
+}
+
+/* Phones have no hover and too little room; the Products page has the same
+   collection and type buttons. */
+@media (max-width: 760px) {
+  .nav-menu-panel {
+    display: none;
+  }
+}
+
+.footer {
+  padding: 20px 24px;
+  text-align: center;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  background: var(--navy);
+  color: #fff;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.error {
+  color: #b00020;
+}
+
+/* Home */
+.home h2 {
+  margin-top: 32px;
+}
+
+/* Home banner: crossfading campus photos with a slow zoom, a Yale Blue fade on the
+   left for the text, and buttons to shop or ask the assistant. */
+.home-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 340px;
+  margin-bottom: 28px;
+  border-radius: 12px;
+  overflow: hidden;
+  color: #fff;
+  background: var(--navy);
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(1);
+  transition: opacity 1.2s ease;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  animation: hero-zoom 7s ease-out forwards;
+}
+
+@keyframes hero-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+/* The text fade sits above the photos. */
+.home-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 53, 107, 0.9) 0%, rgba(0, 53, 107, 0.55) 35%, rgba(0, 53, 107, 0) 65%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 520px;
+  padding: 32px 36px 40px;
+}
+
+.home-hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+}
+
+.hero-sub {
+  margin: 8px 0 18px;
+  font-size: 1.1rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.hero-button-ghost {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.hero-dots {
+  position: absolute;
+  right: 20px;
+  bottom: 16px;
+  z-index: 1;
+  display: flex;
+  gap: 8px;
+}
+
+.hero-dots button {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.hero-dots button.active {
+  background: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide {
+    transition: none;
+  }
+  .hero-slide.active {
+    animation: none;
+  }
+}
+
+.home-hero-eyebrow {
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.carousel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.carousel-track {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.carousel-arrow {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--navy);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  .carousel-track {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .carousel-track > :nth-child(n + 3) {
+    display: none;
+  }
+}
+
+.shop-all {
+  margin: 24px 0 8px;
+  text-align: center;
+}
+
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* Collection tiles: campus photo with the name over a dark fade at the bottom. */
+.collection-tile {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  border-radius: 10px;
+  overflow: hidden;
+  color: #fff;
+  text-decoration: none;
+  background: var(--navy);
+}
+
+.collection-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.collection-tile:hover img,
+.collection-tile:focus-visible img {
+  transform: scale(1.05);
+}
+
+.collection-label {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 14px 14px;
+  background: linear-gradient(to top, rgba(0, 31, 63, 0.9), rgba(0, 31, 63, 0));
+}
+
+.collection-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.collection-count {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collection-tile img {
+    transition: none;
+  }
+}
+
+/* Collection filter on Products */
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.chip {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.chip.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+/* About */
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.about-photo {
+  margin: 0;
+}
+
+.about-photo img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.about-photo figcaption {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+@media (max-width: 760px) {
+  .about {
+    grid-template-columns: 1fr;
+  }
+}
+
+.filter-chips-types .chip {
+  font-size: 0.9rem;
+  padding: 4px 12px;
+}
+
+/* My Account */
+.account-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.account-card {
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.account-card h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
+.account-card.form-page {
+  max-width: none;
+}
+
+.account-card dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 16px;
+  margin: 0;
+}
+
+.account-card dt {
+  color: var(--muted);
+}
+
+.account-card dd {
+  margin: 0;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.success {
+  margin: 0;
+  color: #1a7f37;
+}
+
+.button-secondary {
+  background: #fff;
+  color: var(--navy);
+  border: 1px solid var(--navy);
+}
+
+/* Photo credits */
+.credits ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.credits li {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.credits li img {
+  flex: none;
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.footer a {
+  color: inherit;
+}
+
+/* Product grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+}
+
+.product-card:hover {
+  border-color: var(--navy);
+}
+
+.product-card img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  background: var(--bg-soft);
+}
+
+.product-card-body {
+  padding: 12px;
+}
+
+.product-card h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+
+.price {
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.short-description {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Product detail: image left, text right */
+.back-link {
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.product-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.product-detail img {
+  width: 100%;
+  border-radius: 8px;
+  background: var(--bg-soft);
+}
+
+.product-info h1 {
+  margin-top: 0;
+}
+
+.product-info .price {
+  font-size: 1.5rem;
+}
+
+.meta {
+  margin: 4px 0;
+}
+
+.sizes {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.sizes li {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.sizes .size {
+  font-weight: 700;
+}
+
+.sizes li.out {
+  color: var(--muted);
+  background: var(--bg-soft);
+}
+
+@media (max-width: 760px) {
+  .product-detail {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Log in / create account */
+.form-page {
+  max-width: 400px;
+}
+
+.form-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-page label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-page input {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+}
+
+.password-input {
+  position: relative;
+  display: flex;
+}
+
+.password-input input {
+  flex: 1;
+  padding-right: 64px;
+}
+
+.password-input button {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  padding: 4px 8px;
+  border: none;
+  background: none;
+  color: var(--navy);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+/* Hide Edge's own reveal icon, which disappears on blur. */
+.password-input input::-ms-reveal {
+  display: none;
+}
+
+.hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.form-page .error {
+  margin: 0;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Chat widget, fixed to the bottom right */
+.chat-widget {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  z-index: 100;
+}
+
+.chat-toggle {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 999px;
+  background: var(--navy);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.chat-panel {
+  width: 340px;
+  max-width: calc(100vw - 40px);
+  height: 440px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--navy);
+  color: #fff;
+}
+
+.chat-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-header button.chat-clear {
+  font-size: 0.8rem;
+  text-decoration: underline;
+  opacity: 0.85;
+}
+
+.chat-header button {
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chat-message {
+  max-width: 85%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+
+.chat-message.assistant {
+  align-self: flex-start;
+  background: var(--bg-soft);
+}
+
+.chat-message {
+  white-space: pre-wrap;
+}
+
+.chat-turn {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chat-turn.user {
+  align-items: flex-end;
+}
+
+.chat-turn.assistant {
+  align-items: flex-start;
+}
+
+/* Product results inside the chat: best match + "Show all" link */
+.chat-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.chat-card {
+  display: flex;
+  gap: 10px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+}
+
+.chat-card:hover {
+  border-color: var(--navy);
+}
+
+.chat-card img {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  background: var(--bg-soft);
+  border-radius: 4px;
+}
+
+.chat-card-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 0.8rem;
+}
+
+.chat-card-name {
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.chat-card-price {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.chat-card-info {
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-show-all {
+  align-self: flex-start;
+  padding: 4px 10px;
+  border: 1px solid var(--navy);
+  border-radius: 999px;
+  color: var(--navy);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.chat-show-all:hover {
+  background: var(--navy);
+  color: #fff;
+}
+
+.chat-message.typing {
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Live progress while the agent works */
+.chat-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-status-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--navy);
+  animation: chat-pulse 1s ease-in-out infinite;
+}
+
+@keyframes chat-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-status-dot {
+    animation: none;
+  }
+}
+
+.chat-message.error {
+  background: #fdecee;
+  color: #b00020;
+}
+
+.chat-message.user {
+  align-self: flex-end;
+  background: var(--navy);
+  color: #fff;
+}
+
+.chat-input {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+}
+
+.chat-input button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: var(--navy);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.chat-input button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ------------------------------------------------------------------
+   Yale accent colors (Problem 10). Applied sparingly, as Yale's guide
+   recommends: High Intensity Blue marks what shoppers can act on.
+   ------------------------------------------------------------------ */
+
+.button {
+  background: var(--accent);
+  transition: background 0.15s ease;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--navy);
+}
+
+.button-secondary {
+  background: #fff;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.button-secondary:hover:not(:disabled) {
+  background: var(--blue-tint);
+}
+
+.chat-toggle {
+  background: var(--accent);
+}
+
+.chat-show-all {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chat-show-all:hover {
+  background: var(--accent);
+}
+
+.chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.chip:hover:not(.active) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.navbar nav a.active {
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
+}
+
+/* Product cards lift slightly on hover, outlined in High Intensity Blue. */
+.product-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.product-card:hover,
+.product-card:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 53, 107, 0.12);
+}
+
+.carousel-arrow:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Hero badge */
+.home-hero-eyebrow {
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--accent);
+  opacity: 1;
+}
+
+/* Light Yale Blue band behind the collections, so the page isn't all white. */
+.collections-band {
+  margin-top: 36px;
+  padding: 4px 24px 28px;
+  border-radius: 14px;
+  background: var(--blue-tint);
+}
+
+.collections-band h2 {
+  margin-top: 20px;
+  color: var(--navy);
+}
+
+/* Yale Blue footer */
+.footer {
+  margin-top: 40px;
+  padding: 28px 24px;
+  border-top: none;
+  background: var(--navy);
+  color: #fff;
+}
+
+.footer a {
+  color: #fff;
+}
+
+.chat-cards .chat-card:hover {
+  border-color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card,
+  .button {
+    transition: none;
+  }
+  .product-card:hover,
+  .product-card:focus-visible {
+    transform: none;
+  }
+}
+.footer p {
+  margin: 4px 0;
+}
+
+.footer-legal {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+/* Products page: slim campus-photo header with a Yale Blue fade (Problem 10) */
+.page-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 150px;
+  margin-bottom: 20px;
+  padding: 20px 28px;
+  border-radius: 12px;
+  overflow: hidden;
+  color: #fff;
+  background-size: cover;
+  background-position: center 40%;
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 53, 107, 0.92) 0%, rgba(0, 53, 107, 0.6) 45%, rgba(0, 53, 107, 0.2) 100%);
+}
+
+.page-header > * {
+  position: relative;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+}
+
+.page-header p {
+  margin: 2px 0 0;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+/* Product page: collection badge, and a light-blue size panel with bold tiles */
+.collection-badge {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--blue-tint);
+  color: var(--navy);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.collection-badge:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.size-panel {
+  margin-top: 20px;
+  padding: 16px 20px 20px;
+  border-radius: 12px;
+  background: var(--blue-tint);
+}
+
+.size-panel h2 {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+  color: var(--navy);
+}
+
+.size-panel .sizes li {
+  background: #fff;
+  border: 2px solid var(--navy);
+  border-radius: 8px;
+}
+
+.size-panel .sizes .size {
+  font-size: 1.2rem;
+  color: var(--navy);
+}
+
+.size-panel .sizes li.out {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--muted);
+}
+
+.size-panel .sizes li.out .size {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.size-panel .button-secondary {
+  margin-top: 4px;
+}
+/* Low stock: the only time an exact count is shown. */
+.size-panel .sizes li.low {
+  border-color: var(--accent);
+}
+
+.size-panel .sizes li.low span:last-child {
+  color: var(--accent);
+  font-weight: 700;
+}
