@@ -476,3 +476,16 @@
 > README.md will need to explain how to run the front end and back end after the data pack is placed.
 
 **What the first prompt lacked:** It laid out the folder structure and said the data stays local, but it didn't say the repo would be public and submitted as a URL. It also didn't say how `.env` and `.env.example` should be handled or what the README needs to cover.
+
+**Follow-up prompts (when I came back to finish Problem 13):**
+
+> Use my name as Daniel Easterwoman
+> use that private github email
+>
+> what do i do for this github thing
+
+> https://github.com/ewesterman1995/mgt409-hw4
+
+*What was lacking:* My first prompts covered what goes in the repo and what stays out, but not the publishing steps. I hadn't said what name and email to put on the commits (I chose GitHub's private no-reply email so my real address isn't public), and I needed step-by-step help creating the empty public repo before the AI could push to it.
+
+**Result:** Pushed to https://github.com/ewesterman1995/mgt409-hw4. I checked that `.env`, `data/campus_customs.db` and the product images are not in the public repo.
